@@ -3,7 +3,7 @@ set -e
 
 main() {
     echo "CICD-START"
-    echo ${INPUT_PROJECT_NAME}
+
     # 检测是否有输入用户名和密码
     if usesBoolean "${ACTIONS_STEP_DEBUG}"; then
         echo "::add-mask::${INPUT_USERNAME}"
@@ -55,8 +55,6 @@ main() {
     echo "::set-output name=digest::${DIGEST}"
 
     docker logout
-
-    k8s
 }
 
 # 判断参数是否为空
@@ -128,12 +126,4 @@ push() {
     done
 }
 
-# k8s
-k8s() {
-    mkdir ~/.kube && mkdir ~/.aws
-    echo "${INPUT_AWS_CREDENTIALS}" >~/.aws/credentials
-    echo "${INPUT_AWS_CONFIG}" >~/.aws/config
-    echo "${INPUT_KUBE_CONFIG}" >~/.kube/config
-    kubectl rollout restart deployment -n front ${INPUT_PROJECT_NAME}
-}
 main
