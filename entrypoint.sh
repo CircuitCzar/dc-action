@@ -107,11 +107,39 @@ isPreRelease() {
     echo "${1}" | grep -Eq '-'
 }
 
+# 构建配置文件
+buildingConfiguration() {
+    dockerConfig_1=''
+    dockerConfig_2=''
+    nginxConfig=''
+    for file in $(ls -d App_v[0-9]); do
+        version=${file##*App_}
+        arg1="WORKDIR /usr/share/nginx/html_${version}\n"
+        arg2='RUN rm -rf ./*\n'
+        arg3="COPY --from=builder /app/${file}/build .\n"
+        # dockerfile
+        dockerConfig_1="$dockerConfig_1$arg1$arg2$arg3"
+        dockerConfig_2="${dockerConfig_2}WORKDIR /app/${file}\nRUN yarn install && yarn build\n"
+        # nginx
+        location="\tlocation /${version} {\n"
+        talias="\t\talias   /usr/share/nginx/html_${version};\n"
+        index="\t\tindex index.html index.htm;\n"
+        try_files="\t\ttry_files \$uri \$uri/ /${version}/index.html;\n"
+        end="\t\tautoindex on\n\t}\n"
+        nginxConfig="${nginxConfig}${location}${talias}${index}${try_files}${try_files}${end}"
+    done
+    sed -i "10a \\${dockerConfig_1}" Dockerfile
+    sed -i "5a \\${dockerConfig_2}" Dockerfile
+    sed -i "29a \\${nginxConfig}" nginx.conf
+}
 # dockerfile构建项目
 build() {
     cp /Dockerfile ./
     cp /nginx.conf ./nginx.conf
     cp /.dockerignore ./.dockerignore
+
+    buildingConfiguration
+
     local BUILD_TAGS=""
     for TAG in ${TAGS}; do
         BUILD_TAGS="${BUILD_TAGS}-t ${INPUT_NAME}:${TAG} "
