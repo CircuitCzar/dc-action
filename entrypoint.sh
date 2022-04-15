@@ -205,7 +205,7 @@ buildingConfiguration() {
         index="\t\tindex index.html index.htm;\n"
         try_files="\t\ttry_files \$uri \$uri/ /${version}/index.html;\n"
         end="\t\tautoindex on\n\t}\n"
-        nginxConfig="${nginxConfig}${location}${talias}${index}${try_files}${try_files}${end}"
+        nginxConfig="${nginxConfig}${location}${talias}${index}${try_files}${end}"
     done
     sed -i "10a \\${dockerConfig_1}" Dockerfile
     sed -i "5a \\${dockerConfig_2}" Dockerfile
