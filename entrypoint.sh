@@ -121,7 +121,7 @@ buildingConfiguration() {
         dockerConfig_1="$dockerConfig_1$arg1$arg2$arg3"
         dockerConfig_2="${dockerConfig_2}WORKDIR /app/${file}\nRUN yarn install && yarn build\n"
         # nginx
-        location="\tlocation /v${version} {\n"
+        location="\tlocation /${version} {\n"
         talias="\t\talias   /usr/share/nginx/html_${version};\n"
         index="\t\tindex index.html index.htm;\n"
         try_files="\t\ttry_files \$uri \$uri/ /${version}/index.html;\n"
