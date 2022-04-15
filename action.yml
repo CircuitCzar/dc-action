@@ -1,5 +1,5 @@
 name: 'Publish Docker'
-author: 'Lars Gohr'
+author: 'zb'
 branding:
   icon: 'anchor'
   color: 'blue'
@@ -17,39 +17,10 @@ inputs:
   registry:
     description: 'Use registry for pushing to a custom registry'
     required: false
-  snapshot:
-    description: 'Use snapshot to push an additional image'
-    required: false
-  default_branch:
-    description: 'Set the default branch of your repository (default: master)'
-    required: false
-  dockerfile:
-    description: 'Use dockerfile when you would like to explicitly build a Dockerfile'
-    required: false
-  workdir:
-    description: 'Use workdir when you would like to change the directory for building'
-    required: false
-  context:
-    description: 'Use context when you would like to change the Docker build context.'
-    required: false
-  buildargs:
-    description: 'Use buildargs when you want to pass a list of environment variables as build-args'
-    required: false
-  buildoptions:
-    description: 'Use buildoptions when you want to configure options for building'
-    required: false
-  cache:
-    description: 'Use cache when you have big images, that you would only like to build partially'
-    required: false
   tags:
     description: 'Use tags when you want to bring your own tags (separated by comma)'
     required: false
-  tag_names:
-    description: 'Use tag_names when you want to push tags/release by their git name'
-    required: false
-  tag_semver:
-    description: 'Push semver docker tags. e.g. image:1.2.3, image:1.2, image:1'
-    required: false
+    default: 'latest'
   no_push:
     description: 'Set no_push to true if you want to prevent the action from pushing to a registry (default: false)'
     required: false
