@@ -218,6 +218,8 @@ build() {
 
     buildingConfiguration
 
+    cat nginx.conf
+
     local BUILD_TAGS=""
     for TAG in ${TAGS}; do
         BUILD_TAGS="${BUILD_TAGS}-t ${INPUT_NAME}:${TAG} "
